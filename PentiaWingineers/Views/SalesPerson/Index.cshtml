@@ -1,0 +1,37 @@
+﻿@model List<SalesPerson>
+<h1>Current Sales persons available</h1>
+<h3><a href="/SalesPerson/List">Update database</a></h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Order Date</th>
+            <th>Order Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model == null)
+        {
+            <h2>The object to be displayed is null...</h2>
+
+        }
+        else
+        {
+            foreach (var salesPerson in Model)
+            {
+                <tr>
+                    <td>@salesPerson.id</td>
+                    <td>@salesPerson.name</td>
+                    <td>@salesPerson.hireDate</td>
+                    <td>@salesPerson.address</td>
+                    <td>@salesPerson.city</td>
+                    <td>@salesPerson.zipCode</td>
+                    <td><a href="@Url.Action("SalesPersonStats", "SalesPerson", new { id = salesPerson.id})">View Details</a>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>

@@ -1,0 +1,32 @@
+﻿@model SalesPersonOrders
+<h1>@Model.salesPerson.name</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Order Date</th>
+            <th>Order Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model == null)
+        {
+            <h2>The object to be displayed is null...</h2>
+
+        }
+        else
+        {
+            foreach (var order in Model.orders)
+            {
+                <tr>
+                    <td>@order.id</td>
+                    <td>@order.orderName</td>
+                    <td>@order.orderDate</td>
+                    <td>@order.orderPrice</td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
