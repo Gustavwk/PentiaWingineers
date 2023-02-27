@@ -25,12 +25,11 @@ namespace PentiaWingineers.Controllers
             var salesPersons = await salesPersonRepository.fetchData();
             var orderList = await orderRepository.fetchData();
             if (orderList != null) {orderRepository.UpdateOrderTable(orderList); }
-            if (salesPersons!=null) { salesPersonRepository.updateSalesPersonTable(salesPersons);}
+            if (salesPersons!=null) {salesPersonRepository.updateSalesPersonTable(salesPersons);}
             return View(salesPersons);
         }
 
         public IActionResult SalesPersonStats(int id) {
-            
             var salesPerson = salesPersonRepository.GetSalesPersonById(id);
             List<Order> salesPersonOrder = orderRepository.GetAllOrdersFromSalesPerson(salesPerson.id).ToList();
             SalesPersonOrders salesPersonOrders = new SalesPersonOrders(salesPerson,salesPersonOrder);

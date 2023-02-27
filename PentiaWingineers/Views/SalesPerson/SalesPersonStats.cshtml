@@ -1,5 +1,14 @@
 ﻿@model SalesPersonOrders
 <h1>@Model.salesPerson.name</h1>
+<h2>Items sold: @Model.orders.Count</h2>
+<tr>
+    <td>ID: @Model.salesPerson.id</td>
+    <td>@Model.salesPerson.name</td>
+    <td>@Model.salesPerson.hireDate</td>
+    <td>@Model.salesPerson.address</td>
+    <td>@Model.salesPerson.city</td>
+    <td>@Model.salesPerson.zipCode</td>
+</tr>
 <table class="table">
     <thead>
         <tr>

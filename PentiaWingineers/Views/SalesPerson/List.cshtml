@@ -1,36 +1,4 @@
 ﻿@model List<SalesPerson>
 
-<h2>salesPersons Added to DB</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>Customer</th>
-            <th>Order Date</th>
-            <th>Order Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model == null)
-        {
-            <h2>The object to be displayed is null...</h2>
-
-        }
-        else
-        {
-            foreach (var salesPerson in Model)
-            {
-                <tr>
-                    <td>@salesPerson.id</td>
-                    <td>@salesPerson.name</td>
-                    <td>@salesPerson.hireDate</td>
-                    <td>@salesPerson.address</td>
-                    <td>@salesPerson.city</td>
-                    <td>@salesPerson.zipCode</td>
-                </tr>
-            }
-        }
-
-    </tbody>
-</table>
+<h2>Database Updated</h2>
+<h3><a href="/SalesPerson/Index">Back to front</a></h3>
