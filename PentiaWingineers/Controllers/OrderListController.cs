@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PentiaWingineers.Data;
 using PentiaWingineers.Interfaces;
+using PentiaWingineers.Models;
 
 namespace PentiaWingineers.Controllers
 {
@@ -17,13 +18,18 @@ namespace PentiaWingineers.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            List<Order> allOrders = orderRepository.GetAllOrders().ToList();
+            return View(allOrders);
         }
 
         public async Task<IActionResult> ListAsync()
         {
             var orders = await orderRepository.fetchData();
             return View(orders);
+        }
+
+        public IActionResult Overview(){
+            return View(orderRepository.GetAllOrdersSorted());
         }
     }
 }

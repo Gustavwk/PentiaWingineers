@@ -1,0 +1,31 @@
+@model Dictionary<string,OrderOverviewObject>
+<h1>Order overview per. Mounth</h1>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mounth</th>
+            <th>Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{int count = 0;}
+          @if (Model == null) {
+            <h2>The object to be displayed is null...</h2>
+            
+        } else
+        {
+            foreach (var o in Model)
+            {
+                <tr>
+                    <td>@o.Key</td>
+                    <td>@o.Value.orders.Count()</td>
+                    @{count = count+o.Value.orders.Count();}
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<h1>Total orders: @count</h1>

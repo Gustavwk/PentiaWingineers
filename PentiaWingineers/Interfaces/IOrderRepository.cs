@@ -5,6 +5,7 @@ namespace PentiaWingineers.Interfaces
    public interface IOrderRepository
     {
         IEnumerable<Order> GetAllOrders();
+        Dictionary<string,OrderOverviewObject> GetAllOrdersSorted();
         IEnumerable<Order> GetAllOrdersFromSalesPerson(int salesPersonId);
         Order GetOrderById(int id);
         void AddOrder(Order order);

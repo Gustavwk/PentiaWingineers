@@ -1,11 +1,12 @@
 ﻿using Dapper;
-using Mysqlx.Crud;
 using Newtonsoft.Json;
 using PentiaWingineers.Interfaces;
 using PentiaWingineers.Models;
 using System.Data;
 using System.Data.SQLite;
 using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
 using static System.Net.WebRequestMethods;
 
 namespace PentiaWingineers.Data
@@ -22,7 +23,7 @@ namespace PentiaWingineers.Data
             this.connectionString = configuration["ConnectionStrings:PentiaWingineersContext"];
 
         }
-        public void AddOrder(Models.Order order)
+        public void AddOrder(Order order)
         {
             using (IDbConnection cnn = new SQLiteConnection(connectionString))
             {
@@ -35,7 +36,7 @@ namespace PentiaWingineers.Data
         }
 
 
-        public async Task<List<Models.Order>?> fetchData()
+        public async Task<List<Order>?> fetchData()
         {
             HttpClient httpClient = new HttpClient();
             var apiKey = configuration["Api:MyApiKey"];
@@ -47,7 +48,7 @@ namespace PentiaWingineers.Data
             if (response.IsSuccessStatusCode)
             {
                 var jsonString = await response.Content.ReadAsStringAsync();
-                var orders = JsonConvert.DeserializeObject<List<Models.Order>>(jsonString);
+                var orders = JsonConvert.DeserializeObject<List<Order>>(jsonString);
 
                 return orders;
             }
@@ -65,22 +66,27 @@ namespace PentiaWingineers.Data
         }
 
 
-        public IEnumerable<Models.Order> GetAllOrders()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Models.Order> GetAllOrdersFromSalesPerson(int salesPersonId)
+        public IEnumerable<Order> GetAllOrders()
         {
             using (IDbConnection cnn = new SQLiteConnection(connectionString))
             {
-                var query = "SELECT * FROM orders where salesPersonId = @salesPersonId";
-                var output = cnn.Query<Models.Order>(query, new { salesPersonId });
+                var query = "SELECT * FROM Orders";
+                var output = cnn.Query<Order>(query);
                 return output;
             }
         }
 
-        public Models.Order GetOrderById(int id)
+        public IEnumerable<Order> GetAllOrdersFromSalesPerson(int salesPersonId)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(connectionString))
+            {
+                var query = "SELECT * FROM orders where salesPersonId = @salesPersonId";
+                var output = cnn.Query<Order>(query, new { salesPersonId });
+                return output;
+            }
+        }
+
+        public Order GetOrderById(int id)
         {
             throw new NotImplementedException();
         }
@@ -90,17 +96,47 @@ namespace PentiaWingineers.Data
             throw new NotImplementedException();
         }
 
-        public void UpdateOrder(Models.Order order)
+        public void UpdateOrder(Order order)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateOrderTable(List<Models.Order> orders)
+        public void UpdateOrderTable(List<Order> orders)
         {
             foreach (var o in orders)
             {
                 AddOrder(o);
             }
+        }
+
+        public Dictionary<string,OrderOverviewObject> GetAllOrdersSorted()
+        {
+            string year = "";
+            string mounth = "";
+            StringBuilder sb = new StringBuilder();
+            var allOrders = GetAllOrders();
+            var orderOverViewObjects = new Dictionary<string,OrderOverviewObject>();
+            foreach (var o in allOrders)
+            {
+                Regex regexYear = new Regex(@"\d{4}");
+                Regex regexMounth = new Regex(@"-(\d{2})-");
+                Match matchYear = regexYear.Match(o.orderDate);
+                Match matchMounth = regexMounth.Match(o.orderDate);
+                year = matchYear.Value;   
+                mounth = matchMounth.Value;
+                mounth = mounth.Remove(mounth.Length - 1, 1);
+                sb.Append(year);
+                sb.Append(mounth);
+                if (!orderOverViewObjects.ContainsKey(sb.ToString())){
+                    var currentObject = new OrderOverviewObject(new List<Order>(), mounth, year);
+                    currentObject.orders.Add(o);
+                    orderOverViewObjects[sb.ToString()] = currentObject;
+                } else {
+                    orderOverViewObjects[sb.ToString()].orders.Add(o);
+                }
+                sb.Clear();
+            }
+             return orderOverViewObjects;
         }
     }
 }
