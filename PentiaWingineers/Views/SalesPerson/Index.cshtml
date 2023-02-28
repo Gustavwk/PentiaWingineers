@@ -6,6 +6,7 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Items Sold</th>
             <th></th>
         </tr>
     </thead>
@@ -21,6 +22,7 @@
             {
                 <tr>
                     <td>@salesPerson.name</td>
+                    <td>@salesPerson.sales</td>
                     <td><a href="@Url.Action("SalesPersonStats", "SalesPerson", new { id = salesPerson.id})">View Details</a>
                 </tr>
             }

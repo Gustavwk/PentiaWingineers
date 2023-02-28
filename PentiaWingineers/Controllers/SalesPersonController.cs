@@ -16,7 +16,7 @@ namespace PentiaWingineers.Controllers
         }
         public IActionResult Index()
         {
-          var dingdong = salesPersonRepository.GetAllSalesPersons().ToList();
+            var dingdong = salesPersonRepository.GetAllSalesPersons().ToList();
             return View(dingdong);
         }
 

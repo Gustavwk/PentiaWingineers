@@ -10,10 +10,8 @@ namespace PentiaWingineers.Controllers
         
         private readonly IOrderRepository orderRepository;
         public OrderListController(IOrderRepository orderRepository)
-        {
-          
+        {  
             this.orderRepository = orderRepository;
-
         }
 
         public IActionResult Index()

@@ -6,12 +6,11 @@ namespace PentiaWingineers.Interfaces
     {
         IEnumerable<SalesPerson> GetAllSalesPersons();
         SalesPerson GetSalesPersonById(int id);
-        IEnumerable<Order> GetOrdersFromSalesPersonId(int id);
         void AddSalesPerson(SalesPerson salesPerson);
-        void UpdateSalesPerson(SalesPerson salesPerson);
         void DeleteSalesPerson(int id);
         Task<List<SalesPerson>?> fetchData();
-        void resetSalesTable();
         void updateSalesPersonTable(List<SalesPerson> salesPersons);
+        public int GetSalesCountFromSalesPerson(int salesPersonId);
+        public void deleteAllSalesPersons();
     }
 }

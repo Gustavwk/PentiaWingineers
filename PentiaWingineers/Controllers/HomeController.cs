@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PentiaWingineers.Interfaces;
 using PentiaWingineers.Models;
 using System.Diagnostics;
 
@@ -7,10 +8,14 @@ namespace PentiaWingineers.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IOrderRepository _orderRepository;
+        private readonly ISalesPersonRepository _salesPersonRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ISalesPersonRepository salesPersonRepository, IOrderRepository orderRepository) 
         {
             _logger = logger;
+            _orderRepository = orderRepository; 
+            _salesPersonRepository = salesPersonRepository;
         }
 
         public IActionResult Index()
@@ -20,6 +25,13 @@ namespace PentiaWingineers.Controllers
 
         public IActionResult Privacy()
         {
+            return View();
+        }
+
+        public IActionResult restart()
+        {
+            _orderRepository.deleteAllOrders();
+            _salesPersonRepository.deleteAllSalesPersons();
             return View();
         }
 

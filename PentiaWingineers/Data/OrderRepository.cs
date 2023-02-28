@@ -60,12 +60,6 @@ namespace PentiaWingineers.Data
             }
         }
 
-        public void DeleteOrder(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-
         public IEnumerable<Order> GetAllOrders()
         {
             using (IDbConnection cnn = new SQLiteConnection(connectionString))
@@ -86,20 +80,15 @@ namespace PentiaWingineers.Data
             }
         }
 
-        public Order GetOrderById(int id)
+        public void deleteAllOrders()
         {
-            throw new NotImplementedException();
+            using (IDbConnection cnn = new SQLiteConnection(connectionString))
+            {
+                var query = "DELETE FROM Orders";
+                cnn.QueryFirstOrDefault<SalesPerson>(query);
+            }
         }
 
-        public void resetOrdersTable()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateOrder(Order order)
-        {
-            throw new NotImplementedException();
-        }
 
         public void UpdateOrderTable(List<Order> orders)
         {

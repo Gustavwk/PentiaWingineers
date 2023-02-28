@@ -71,28 +71,47 @@ namespace PentiaWingineers.Data
 
         public IEnumerable<SalesPerson> GetAllSalesPersons()
         {
-            
+
             using (IDbConnection cnn = new SQLiteConnection(connectionString))
             {
                 var query = "select * from salesperson";
                 var output = cnn.Query<SalesPerson>(query);
+                foreach (SalesPerson s in output)
+                {
+                    s.sales = GetSalesCountFromSalesPerson(s.id);
+                    
+                }
+
+                return output;
+
+            }
+        }
+
+        public int GetSalesCountFromSalesPerson(int salesPersonId)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(connectionString))
+            {
+                var query = "SELECT COUNT(*) FRdOM orders where salesPersonId = @salesPersonId";
+                var output = cnn.QueryFirst<int>(query, new { salesPersonId });
                 return output;
             }
-            
         }
 
-        public void resetSalesTable()
-        {
-            throw new NotImplementedException();
-        }
-
-   
 
         public void deleteSalesPersonById(int id) {
             using (IDbConnection cnn = new SQLiteConnection(connectionString))
             {
                 var query = "DELETE FROM salesperson WHERE id = @id";
                 cnn.QueryFirstOrDefault<SalesPerson>(query, new { id });
+            }
+        }
+
+        public void deleteAllSalesPersons()
+        {
+            using (IDbConnection cnn = new SQLiteConnection(connectionString))
+            {
+                var query = "DELETE FROM SalesPerson";
+                cnn.QueryFirstOrDefault<SalesPerson>(query);
             }
         }
 
@@ -109,11 +128,6 @@ namespace PentiaWingineers.Data
             }
         }
 
-        public void UpdateSalesPerson(SalesPerson salesPerson)
-        {
-            throw new NotImplementedException();
-        }
-
         public SalesPerson GetSalesPersonById(int id)
         {
             using (IDbConnection cnn = new SQLiteConnection(connectionString))
@@ -121,11 +135,6 @@ namespace PentiaWingineers.Data
                 var query = "SELECT * FROM salesperson WHERE id = @id";
                 return cnn.QueryFirstOrDefault<SalesPerson>(query, new { id });
             }
-        }
-
-        public IEnumerable<Order> GetOrdersFromSalesPersonId(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }
