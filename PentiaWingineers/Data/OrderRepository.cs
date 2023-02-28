@@ -49,8 +49,12 @@ namespace PentiaWingineers.Data
             {
                 var jsonString = await response.Content.ReadAsStringAsync();
                 var orders = JsonConvert.DeserializeObject<List<Order>>(jsonString);
-
+                foreach (var o in orders)
+                {
+                    AddOrder(o);
+                }
                 return orders;
+               
             }
             else
             {
