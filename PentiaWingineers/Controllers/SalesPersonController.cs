@@ -19,7 +19,7 @@ namespace PentiaWingineers.Controllers
             var dingdong = salesPersonRepository.GetAllSalesPersons().ToList();
             return View(dingdong);
         }
-
+        
         public async Task<IActionResult> ListAsync()
         {
             var salesPersons = await salesPersonRepository.fetchData();

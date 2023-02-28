@@ -91,7 +91,7 @@ namespace PentiaWingineers.Data
         {
             using (IDbConnection cnn = new SQLiteConnection(connectionString))
             {
-                var query = "SELECT COUNT(*) FRdOM orders where salesPersonId = @salesPersonId";
+                var query = "SELECT COUNT(*) FROM orders where salesPersonId = @salesPersonId";
                 var output = cnn.QueryFirst<int>(query, new { salesPersonId });
                 return output;
             }
